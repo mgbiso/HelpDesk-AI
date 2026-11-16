@@ -129,3 +129,10 @@ Também representa parte da minha evolução acadêmica e profissional na área 
 ## Autora
 
 Desenvolvido como projeto de portfólio para demonstrar conhecimentos em desenvolvimento de software, backend, frontend e banco de dados.
+
+## Demonstração do sistema
+
+### Dashboard
+
+![Dashboard do HelpDesk AI](screenshots/dashboard.png)
+
