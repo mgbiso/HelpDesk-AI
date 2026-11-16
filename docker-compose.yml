@@ -1,0 +1,44 @@
+services:
+  db:
+    image: postgres:16
+    container_name: helpdesk-ai-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-helpdesk_ai}
+      POSTGRES_USER: ${POSTGRES_USER:-helpdesk_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-troque_esta_senha}
+    ports:
+      - "5434:5432"
+    volumes:
+      - helpdesk_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-helpdesk_user} -d ${POSTGRES_DB:-helpdesk_ai}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  api:
+    build: ./backend
+    container_name: helpdesk-ai-api
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-helpdesk_user}:${POSTGRES_PASSWORD:-troque_esta_senha}@db:5432/${POSTGRES_DB:-helpdesk_ai}
+      CORS_ORIGINS: http://localhost:5173
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: helpdesk-ai-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  helpdesk_data:

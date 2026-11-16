@@ -1,0 +1,20 @@
+.env
+.venv/
+venv/
+node_modules/
+dist/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+.env.*
+!.env.example
+
+# Arquivos e configurações locais
+.idea/
+.vscode/
+*.log
+
+# Banco de dados local
+*.db
+*.sqlite3
